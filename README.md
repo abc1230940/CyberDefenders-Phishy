@@ -27,6 +27,16 @@
 
 
 <h2 id="tools-used"> Tools Used </h2>
+<ol>
+  <li> <a href="https://www.exterro.com/digital-forensics-software/ftk-imager"> FTK Imager </a> </li>
+  <li> <a href="https://ericzimmerman.github.io/#contributesupport-opportunities"> Registry Explorer </li>
+  <li> <a href="https://sqlitebrowser.org/"> DB Browser for SQLite </li>
+  <li> <a href="https://github.com/andreas-mausch/whatsapp-viewer/releases/tag/v1.15"> Whatsapp Viewer </li>
+  <li> <a href="https://blog.didierstevens.com/2026/03/17/update-oledump-py-version-0-0-85/"> oledump </li>
+  <li> <a href="https://github.com/decalage2/oletools"> oletools </a> </li>
+  <li> <a href="https://www.nirsoft.net/utils/passwordfox.html"> Passwordfox </a> </li>
+  <li> <a href="https://www.virustotal.com/"> VirusTotal </a> </li>
+</ol>
 <p align="right">(<a href="#top">Back to Top</a>)</p>
 
 
