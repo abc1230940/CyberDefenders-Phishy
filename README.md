@@ -138,7 +138,7 @@
 <img width="605" height="70" alt="Screenshot 2026-06-25 183603" src="https://github.com/user-attachments/assets/bbba1140-0812-4a38-bcca-529e3b83f8a2" />
 <p> We can navigate to <strong>"\Users\Semah\AppData\Roaming\Mozilla\Firefox\Profiles\pyb51x2n.default-release"</strong> and open the places.sqlite with DB Browser for SQLite, which contained the browsing history of the Mozilla Firefox. <strong>Please be reminded that the temporary SHM and WAL files were also included to give a full picture of browsing history</strong>. </p>
 <img width="1222" height="540" alt="Screenshot 2026-06-25 184615" src="https://github.com/user-attachments/assets/eb93661b-894e-48ea-8352-fd8616731530" />
-<p> The moz_places table revealed all browsing history and it was predicted <strong>hxxp[://]appIe[.]competitions[.]com/login[.]php</strong> was the fake login page, belonging to the same malicious domain appIe.com </p>
+<p> The moz_places table revealed all browsing history and it was predicted <strong>hxxp[://]appIe[.]competitions[.]com/login[.]php</strong> was the fake login page, belonging to the same malicious domain appIe[.]com </p>
 <br>
 <p> <strong> 11. What is the password the user submitted to the login page? </strong></p>
 <p> This question took me long time to think because I could not find any data in the formhistory.sqlite and other possible database until I looked at the hint. We can identify the entered password using <a href="https://www.nirsoft.net/utils/passwordfox.html">passwordfox from Nirsoft</a>. </p>
