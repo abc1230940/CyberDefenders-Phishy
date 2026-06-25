@@ -52,7 +52,7 @@
 
 
 <h2 id="questions"> Questions </h2>
-<p> <strong> What is the hostname of the victim machine? </strong></p>
+<p> <strong> 1. What is the hostname of the victim machine? </strong></p>
 <p> We needed to obtain the hostname in the SYSTEM Registry hive, which was stored in a binary format and unreadable. Therefore, we needed to parse the hive using Registry Explorer from Eric Zimmerman Suite. </p>
 <img width="321" height="272" alt="Screenshot 2026-06-25 153539" src="https://github.com/user-attachments/assets/8c763647-26de-4436-9e14-293e7f18b04b" />
 <p> we navigated to <strong>File -> Load hive</strong> </p>
@@ -79,11 +79,44 @@
 <img width="681" height="362" alt="Screenshot 2026-06-25 160958" src="https://github.com/user-attachments/assets/1241e09d-216d-46ab-8437-58cab181e146" />
 <p> In the conversation the attacker lied to Semah to click on the URL <strong>hxxp[://]appIe[.]com/IPhone-Winners[.]doc</strong> to download a document containing 5 winners of iPhone 12 special edition. Let us check the reputation of the domain on VirusTotal. </p>
 <img width="1830" height="582" alt="Screenshot 2026-06-25 161605" src="https://github.com/user-attachments/assets/455b335c-29ec-4673-834f-816176db1eb8" />
-<p> The typosquatted domain appIe[.]com impersonating apple.com was classified as malicious, it was believed that it was a phishing message with a malicious URL. </p>
+<p> The typosquatted domain appIe[.]com impersonating apple.com was classified as malicious, it was believed that it was a smishing move with a malicious URL. </p>
 <br>
 <p> <strong> 4. Multiple streams contain macros in the document. Provide the number of the highest stream. </strong></p>
 <p> Based on the conversation it was believed that Semah clicked on the malicious URL and downloaded the malicious document IPhone-winner.doc. Therefore we can navigate to <strong>"Users\Semah\Downloads" to find the document. </strong></p> 
 <img width="632" height="390" alt="Screenshot 2026-06-25 162642" src="https://github.com/user-attachments/assets/9db35acd-ebb8-4b13-b062-d0afd22d8670" />
+<p> In order to identify the embedded macros streams in the document, we needed to use oledump.py to extract them. </p>
+<pre> <code lang="cmd"> python oledump.py "path\\to\\IPhone-winners.doc" </code> </pre>
+<img width="912" height="203" alt="Screenshot 2026-06-25 164039" src="https://github.com/user-attachments/assets/595dc2f2-f452-4cd2-ba3f-d8a68c459b68" />
+<p> Based on the result, stream 9 and <strong>10</strong> contained the macros. The letter M represented that the macros contained VBA script. </p>
+<br>
+<p> <strong> 5. The macro executed a program. Provide the program name? </strong></p>
+<p> Let us dive into the macros streams to find out the malicious VBA script using the same tool oledump.py. </p>
+<pre> <code lang="cmd"> python oledump.py -s 9 -v "path\\to\\IPhone-winners.doc" </code> </pre>
+<ul>
+  <li> -s: stream number </li>
+  <li> -v: VBA decompression to obtain the script </li>
+</ul>
+<img width="958" height="237" alt="Screenshot 2026-06-25 165149" src="https://github.com/user-attachments/assets/939d23da-deb5-4815-9f65-7cefed4cf94f" />
+<p> There was nothing special in stream 9. Let us check the stream 10. </p>
+<img width="983" height="605" alt="Screenshot 2026-06-25 165252" src="https://github.com/user-attachments/assets/de8f24c3-5422-4758-a5fc-8e060dca9ed8" />
+<p> When we saw a bunch of chr(), we can realize that the VBA script was obfuscated to evade detection and make reverse engineering more difficult. In order to deobfuscate the VBA script, we can use olevba from the oletools suite to decode the chr(). </p>
+<p> First extract the VBA script from the document </p>
+<pre> <code lang="cmd"> olevba.exe "path\\to\\IPhone-winners.doc" > Iphone-winners.vba </code> </pre>
+<img width="82" height="100" alt="Screenshot 2026-06-25 172250" src="https://github.com/user-attachments/assets/fe60cc3c-a5a6-47e3-9867-1915e54b3300" />
+<p> Then deobfuscate the VBA script </p>
+<pre> <code lang="cmd"> olevba.exe --deobf --reveal "path\\to\\IPhone-winners.vb" > Iphone-winners_deobf.vba </code> </pre>
+<img width="80" height="105" alt="Screenshot 2026-06-25 172324" src="https://github.com/user-attachments/assets/1106882e-715d-41da-aa4d-d1b70466afc1" />
+<p> Finally we opened the deobfuscated script with notepad.exe or VSCode and checked out the script. </p>
+<img width="1710" height="702" alt="Screenshot 2026-06-25 172709" src="https://github.com/user-attachments/assets/00e5b308-e1f2-4745-9231-6019b93f6124" />
+<p> When the macro stream 10 (iphoneevil) was executed, <strong>powershell</strong> was spawned to decode and execute the above base64 encoded script in the background! </p>
+<br>
+<p> <strong> 6. The macro downloaded a malicious file. Provide the full download URL. </strong></p>
+<p> Let us decode the script on Cyberchef. </p>
+<img width="948" height="157" alt="Screenshot 2026-06-25 173623" src="https://github.com/user-attachments/assets/5324220c-fc94-497a-89d2-fcaddb435e41" />
+<p> The script made a HTTP GET request to <strong>hxxp[://]appIe[.]com/Iphone[.]exe</strong>. </p>
+<br>
+<p> <strong> 7. Where was the malicious file downloaded to? (Provide the full path) </strong></p>
+<p> Based on the script in the last screenshot, the file was downloaded to <strong>"C:\Temp\IPhone.exe"</strong>. </p>
 <p align="right">(<a href="#top">Back to Top</a>)</p>
 
 
