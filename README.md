@@ -125,7 +125,7 @@
 <p> IPhone.exe (original name: ab.exe) belongs to Meterpreter malware family, which is a core component in <strong>Metasploit</strong> framework and often used in penetration testing. </p>
 <br>
 <p> <strong> 9. What is the attacker's IP address? </strong></p>
-<p> We can navigate to the Relations section of the same analysis report on VirusTotal and look at the contacted URL of IPhone.exe. </p>
+<p> We can navigate to the Relations section of the same analysis report on VirusTotal and look at the contacted IP Addresses of IPhone.exe. </p>
 <img width="567" height="562" alt="Screenshot 2026-06-25 175705" src="https://github.com/user-attachments/assets/a38e167f-3c34-49ef-a55c-50d2aef031e3" />
 <p> I tried one by one and the answer was <strong>155[.]94[.]69[.]27</strong> </p>
 <br>
