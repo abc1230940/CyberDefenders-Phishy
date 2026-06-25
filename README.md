@@ -40,9 +40,53 @@
 <p align="right">(<a href="#top">Back to Top</a>)</p>
 
 
+<h2 id="prerequisite"> Prerequisite </h2>
+<p> Before analyzing the disk image, we needed to mount the investigated image in FTK Imager. </p>
+<img width="380" height="533" alt="Screenshot 2026-06-25 151423" src="https://github.com/user-attachments/assets/cffc2d1d-52d0-4b16-a82e-61496a894cdf" />
+<p> We first navigated to <strong>File -> Image Mounting...</strong> </p>
+<img width="568" height="562" alt="Screenshot 2026-06-25 151520" src="https://github.com/user-attachments/assets/cb24f10c-dd2b-465e-a4f3-64ada4da6b13" />
+<p> Then chose the disk image GiveAway.ad1 and mounted. </p>
+<img width="213" height="81" alt="Screenshot 2026-06-25 151845" src="https://github.com/user-attachments/assets/f61115d7-fc22-45ea-b9ea-fe878e57626a" />
+<p> Once it is mounted, the image will be shown in your removable disk. And Great! Let us go through the task. </p>
+<p align="right">(<a href="#top">Back to Top</a>)</p>
+
+
 <h2 id="questions"> Questions </h2>
+<p> <strong> What is the hostname of the victim machine? </strong></p>
+<p> We needed to obtain the hostname in the SYSTEM Registry hive, which was stored in a binary format and unreadable. Therefore, we needed to parse the hive using Registry Explorer from Eric Zimmerman Suite. </p>
+<img width="321" height="272" alt="Screenshot 2026-06-25 153539" src="https://github.com/user-attachments/assets/8c763647-26de-4436-9e14-293e7f18b04b" />
+<p> we navigated to <strong>File -> Load hive</strong> </p>
+<img width="600" height="487" alt="Screenshot 2026-06-25 153734" src="https://github.com/user-attachments/assets/4d30d39b-b2ce-4975-83c9-08a117e417a1" />
+<p> Chose the SYSTEM hive where it was located in the path \Windows\System32\config\SYSTEM </p>
+<img width="1146" height="400" alt="Screenshot 2026-06-25 154027" src="https://github.com/user-attachments/assets/c2e8e5f9-67f8-404b-aeb4-8d781396834b" />
+<p> We can find the hostname by following the path \SYSTEM\CurrentControlSet002\Control\ComputerName\ComputerName</p>
+<img width="697" height="146" alt="Screenshot 2026-06-25 154446" src="https://github.com/user-attachments/assets/43ad78f6-bed1-4d06-a680-3fd619bfc612" />
+<p> The hostname was <strong>WIN-NF3JQEU4G0T</strong>. </p>
+<img width="881" height="850" alt="Screenshot 2026-06-25 154555" src="https://github.com/user-attachments/assets/75814951-1e37-439c-b85c-133166666a6b" />
+<p> There was a Registry Forensics Cheatsheet from <a href="https://assets.tryhackme.com/cheatsheets/Windows%20Forensics%20Cheatsheet.pdf">TryHackMe</a> to check the other configuration settings. </p>
+<br>
+<p> <strong> 2. What is the messaging app installed on the victim machine? </strong></p>
+<p> In order to find the installed app on the machine, we can navigate to <strong>"\Users\Semah\AppData\Roaming"</strong> </p>
+<img width="623" height="146" alt="Screenshot 2026-06-25 160254" src="https://github.com/user-attachments/assets/c62ab966-3911-4a86-9e4e-d5ef5a1d3919" />
+<p> The messaging app was <strong>Whatsapp</strong>. </p>
+<br>
+<p> <strong> 3. The attacker tricked the victim into downloading a malicious document. Provide the full download URL. </strong></p>
+<p> In order to find the document downloaded from the chatroom with the attacker, we needed to navigate to the Whatsapp folder to look through the chat history. I asked Gemini for the name and the path of the Whatsapp chat history database. </p>
+<img width="830" height="461" alt="Screenshot 2026-06-24 165335" src="https://github.com/user-attachments/assets/09bd0807-329e-4e61-bf0a-e8dd2a6226ee" />
+<p> The name of database in Windows OS is msgstore.db and it is located in the path <strong>"\Whatsapp\Database"</strong></p>
+<img width="618" height="167" alt="Screenshot 2026-06-25 160640" src="https://github.com/user-attachments/assets/c801f061-2574-4792-a200-fc0ecbfdff22" />
+<p> Then we opened the database with DB Browser for SQLite and checked the table available_message_view to find the conversations with the attacker. </p>
+<img width="681" height="362" alt="Screenshot 2026-06-25 160958" src="https://github.com/user-attachments/assets/1241e09d-216d-46ab-8437-58cab181e146" />
+<p> In the conversation the attacker lied to Semah to click on the URL <strong>hxxp[://]appIe[.]com/IPhone-Winners[.]doc</strong> to download a document containing 5 winners of iPhone 12 special edition. Let us check the reputation of the domain on VirusTotal. </p>
+<img width="1830" height="582" alt="Screenshot 2026-06-25 161605" src="https://github.com/user-attachments/assets/455b335c-29ec-4673-834f-816176db1eb8" />
+<p> The typosquatted domain appIe[.]com impersonating apple.com was classified as malicious, it was believed that it was a phishing message with a malicious URL. </p>
+<br>
+<p> <strong> 4. Multiple streams contain macros in the document. Provide the number of the highest stream. </strong></p>
+<p> Based on the conversation it was believed that Semah clicked on the malicious URL and downloaded the malicious document IPhone-winner.doc. Therefore we can navigate to <strong>"Users\Semah\Downloads" to find the document. </strong></p> 
+<img width="632" height="390" alt="Screenshot 2026-06-25 162642" src="https://github.com/user-attachments/assets/9db35acd-ebb8-4b13-b062-d0afd22d8670" />
 <p align="right">(<a href="#top">Back to Top</a>)</p>
 
 
 <h2 id="reference"> Reference </h2>
+<p> <a href="https://www.virustotal.com/gui/domain/appie.com/detection"> Static analysis report for the suspcious domain hxxp[://]appIe[.]com on VirusTotal </a> </p>
 <p align="right">(<a href="#top">Back to Top</a>)</p>
