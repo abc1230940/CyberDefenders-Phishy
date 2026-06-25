@@ -104,22 +104,43 @@
 <pre> <code lang="cmd"> olevba.exe "path\\to\\IPhone-winners.doc" > Iphone-winners.vba </code> </pre>
 <img width="82" height="100" alt="Screenshot 2026-06-25 172250" src="https://github.com/user-attachments/assets/fe60cc3c-a5a6-47e3-9867-1915e54b3300" />
 <p> Then deobfuscate the VBA script </p>
-<pre> <code lang="cmd"> olevba.exe --deobf --reveal "path\\to\\IPhone-winners.vb" > Iphone-winners_deobf.vba </code> </pre>
+<pre> <code lang="cmd"> olevba.exe --deobf --reveal "path\\to\\IPhone-winners.vba" > Iphone-winners_deobf.vba </code> </pre>
 <img width="80" height="105" alt="Screenshot 2026-06-25 172324" src="https://github.com/user-attachments/assets/1106882e-715d-41da-aa4d-d1b70466afc1" />
 <p> Finally we opened the deobfuscated script with notepad.exe or VSCode and checked out the script. </p>
 <img width="1710" height="702" alt="Screenshot 2026-06-25 172709" src="https://github.com/user-attachments/assets/00e5b308-e1f2-4745-9231-6019b93f6124" />
 <p> When the macro stream 10 (iphoneevil) was executed, <strong>powershell</strong> was spawned to decode and execute the above base64 encoded script in the background! </p>
 <br>
 <p> <strong> 6. The macro downloaded a malicious file. Provide the full download URL. </strong></p>
-<p> Let us decode the script on Cyberchef. </p>
+<p> Let us decode the script in the variable lllllllllll on Cyberchef. </p>
 <img width="948" height="157" alt="Screenshot 2026-06-25 173623" src="https://github.com/user-attachments/assets/5324220c-fc94-497a-89d2-fcaddb435e41" />
 <p> The script made a HTTP GET request to <strong>hxxp[://]appIe[.]com/Iphone[.]exe</strong>. </p>
 <br>
 <p> <strong> 7. Where was the malicious file downloaded to? (Provide the full path) </strong></p>
 <p> Based on the script in the last screenshot, the file was downloaded to <strong>"C:\Temp\IPhone.exe"</strong>. </p>
+<br>
+<p> <strong> 8. What is the name of the framework used to create the malware? </strong></p>
+<p> First, we navigated to <strong>"\Temp\IPhone.exe"</strong> and uploaded the malware to VirusTotal for static analysis. </p>
+<img width="625" height="70" alt="Screenshot 2026-06-25 174836" src="https://github.com/user-attachments/assets/5087f1de-908b-4cd2-b151-ca06c8eeaddb" />
+<img width="1706" height="718" alt="Screenshot 2026-06-25 174811" src="https://github.com/user-attachments/assets/05aeccac-7fde-4e8e-a963-554c0c67ddc5" />
+<p> IPhone.exe (oringinal name: ab.exe) belongs to Meterpreter malware family, which is a core component in <strong>Metasploit</strong> framework and often used in penetration testing. </p>
+<br>
+<p> <strong> 9. What is the attacker's IP address? </strong></p>
+<p> We can navigate to the Relations section of the same analysis report on VirusTotal and look at the contacted URL of IPhone.exe. </p>
+<img width="567" height="562" alt="Screenshot 2026-06-25 175705" src="https://github.com/user-attachments/assets/a38e167f-3c34-49ef-a55c-50d2aef031e3" />
+<p> I tried one by one and the answer was <strong>155[.]94[.]69[.]27</strong> </p>
+<br>
+<p> <strong> 10. The fake giveaway used a login page to collect user information. Provide the full URL of the login page? </strong></p>
+<p> In order to identify the fake login page, we needed to review the browsing history of Semah. </p>
+<img width="623" height="146" alt="Screenshot 2026-06-25 160254" src="https://github.com/user-attachments/assets/83674fc6-b962-488c-8c16-32acdf4a2f7f" />
+<p> We were reminded that there was a folder "Mozilla" in the same folder of Whatsapp, it was believed that Semah configured Mozilla Firefox as her default web browser. Therefore, the database of browsing history can also be found. </p>
+<img width="1888" height="667" alt="Screenshot 2026-06-25 182939" src="https://github.com/user-attachments/assets/7ad3e445-8e27-4824-b33b-27dba79aad86" />
+<p> To learn more about the artifacts of different browsers, please check out the <a href="https://app.letsdefend.io/training/lessons/browser-forensics">Browser Forensics course</a> provided by LetsDefend, which provided an excellent tutorial about this topic. </p>
+<img width="605" height="70" alt="Screenshot 2026-06-25 183603" src="https://github.com/user-attachments/assets/bbba1140-0812-4a38-bcca-529e3b83f8a2" />
+<p> We can navigate to <strong>"\Users\Semah\AppData\Roaming\Mozilla\Firefox\Profiles\pyb51x2n.default-release"</strong> and open the places.sqlite with DB Browser for SQLite, which contained the browsing history of the Mozilla Firefox. <strong>Please be reminded that the temporary SHM and WAL files were also included to give a full picture of browsing history</strong>. </p>
 <p align="right">(<a href="#top">Back to Top</a>)</p>
 
 
 <h2 id="reference"> Reference </h2>
 <p> <a href="https://www.virustotal.com/gui/domain/appie.com/detection"> Static analysis report for the suspcious domain hxxp[://]appIe[.]com on VirusTotal </a> </p>
+<p> <a href="https://www.virustotal.com/gui/file/72c677ba5bf40394361b3566b6bb2b1c0c5e726b10c9af2debf7384385ebdbd1"> Static analysis report for IPhone.exe on VirusTotal </a> </p>
 <p align="right">(<a href="#top">Back to Top</a>)</p>
