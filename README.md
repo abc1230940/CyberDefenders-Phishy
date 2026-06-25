@@ -122,7 +122,7 @@
 <p> First, we navigated to <strong>"\Temp\IPhone.exe"</strong> and uploaded the malware to VirusTotal for static analysis. </p>
 <img width="625" height="70" alt="Screenshot 2026-06-25 174836" src="https://github.com/user-attachments/assets/5087f1de-908b-4cd2-b151-ca06c8eeaddb" />
 <img width="1706" height="718" alt="Screenshot 2026-06-25 174811" src="https://github.com/user-attachments/assets/05aeccac-7fde-4e8e-a963-554c0c67ddc5" />
-<p> IPhone.exe (oringinal name: ab.exe) belongs to Meterpreter malware family, which is a core component in <strong>Metasploit</strong> framework and often used in penetration testing. </p>
+<p> IPhone.exe (original name: ab.exe) belongs to Meterpreter malware family, which is a core component in <strong>Metasploit</strong> framework and often used in penetration testing. </p>
 <br>
 <p> <strong> 9. What is the attacker's IP address? </strong></p>
 <p> We can navigate to the Relations section of the same analysis report on VirusTotal and look at the contacted URL of IPhone.exe. </p>
@@ -132,15 +132,25 @@
 <p> <strong> 10. The fake giveaway used a login page to collect user information. Provide the full URL of the login page? </strong></p>
 <p> In order to identify the fake login page, we needed to review the browsing history of Semah. </p>
 <img width="623" height="146" alt="Screenshot 2026-06-25 160254" src="https://github.com/user-attachments/assets/83674fc6-b962-488c-8c16-32acdf4a2f7f" />
-<p> We were reminded that there was a folder "Mozilla" in the same folder of Whatsapp, it was believed that Semah configured Mozilla Firefox as her default web browser. Therefore, the database of browsing history can also be found. </p>
+<p> There was a folder "Mozilla" in the same folder of Whatsapp, it was believed that Semah configured Mozilla Firefox as her default web browser. Therefore, the database of browsing history can also be found. </p>
 <img width="1888" height="667" alt="Screenshot 2026-06-25 182939" src="https://github.com/user-attachments/assets/7ad3e445-8e27-4824-b33b-27dba79aad86" />
 <p> To learn more about the artifacts of different browsers, please check out the <a href="https://app.letsdefend.io/training/lessons/browser-forensics">Browser Forensics course</a> provided by LetsDefend, which provided an excellent tutorial about this topic. </p>
 <img width="605" height="70" alt="Screenshot 2026-06-25 183603" src="https://github.com/user-attachments/assets/bbba1140-0812-4a38-bcca-529e3b83f8a2" />
 <p> We can navigate to <strong>"\Users\Semah\AppData\Roaming\Mozilla\Firefox\Profiles\pyb51x2n.default-release"</strong> and open the places.sqlite with DB Browser for SQLite, which contained the browsing history of the Mozilla Firefox. <strong>Please be reminded that the temporary SHM and WAL files were also included to give a full picture of browsing history</strong>. </p>
+<img width="1222" height="540" alt="Screenshot 2026-06-25 184615" src="https://github.com/user-attachments/assets/eb93661b-894e-48ea-8352-fd8616731530" />
+<p> The moz_places table revealed all browsing history and it was predicted <strong>hxxp[://]appIe[.]competitions[.]com/login[.]php</strong> was the fake login page, belonging to the same malicious domain appIe.com </p>
+<br>
+<p> <strong> 11. What is the password the user submitted to the login page? </strong></p>
+<p> This question took me long time to think because I could not find any data in the formhistory.sqlite and other possible database until I looked at the hint. We can identify the entered password using <a href="https://www.nirsoft.net/utils/passwordfox.html">passwordfox from Nirsoft</a>. </p>
+<img width="620" height="467" alt="Screenshot 2026-06-25 185802" src="https://github.com/user-attachments/assets/f06ea9fe-2e74-4702-984f-da45b8ec1bc8" />
+<p> After analysing the Firefox folder pyb51x2n.default-release, we can identify the password submitted to hxxp[://]appIe[.]competitions[.]com/login[.]php was <strong>GacsriicUZMY4xiAF4yl</strong>. </p>
 <p align="right">(<a href="#top">Back to Top</a>)</p>
 
 
 <h2 id="reference"> Reference </h2>
+<p> <a href="https://cyberdefenders.org/blueteam-ctf-challenges/achievements/abc1230940/phishy/"> CyberDefenders - Phishy Lab </a> </p>
 <p> <a href="https://www.virustotal.com/gui/domain/appie.com/detection"> Static analysis report for the suspcious domain hxxp[://]appIe[.]com on VirusTotal </a> </p>
 <p> <a href="https://www.virustotal.com/gui/file/72c677ba5bf40394361b3566b6bb2b1c0c5e726b10c9af2debf7384385ebdbd1"> Static analysis report for IPhone.exe on VirusTotal </a> </p>
+<p> <a href="https://assets.tryhackme.com/cheatsheets/Windows%20Forensics%20Cheatsheet.pdf"> Windows Registry Forensics Cheatsheet from TryHackMe </a> </p>
+<p> <a href="https://app.letsdefend.io/training/lessons/browser-forensics"> LetsDefend Browser Forensics course </a> </p>
 <p align="right">(<a href="#top">Back to Top</a>)</p>
